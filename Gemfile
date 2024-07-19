@@ -20,6 +20,9 @@ gem "jbuilder", "~> 2.7"
 # Load environment variables from .env file [https://github.com/bkeepers/dotenv]
 gem 'dotenv-rails', groups: [:development, :test]
 
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+gem "bcrypt", "~> 3.1.7"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -41,7 +44,13 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
 
+# Use Devise for user authentication [https://github.com/heartcombo/devise]
 gem 'devise'
+
+group :test do
+  # Matchers for testing Rails models with RSpec [https://github.com/thoughtbot/shoulda-matchers]
+  gem 'shoulda-matchers', '~> 5.0'
+end
 
 group :development, :test do
   gem 'rspec-rails'
