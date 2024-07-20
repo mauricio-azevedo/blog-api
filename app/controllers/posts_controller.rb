@@ -27,6 +27,8 @@ class PostsController < ApplicationController
       @details = @post.errors.full_messages
       render 'shared/response', status: :unprocessable_entity
     end
+  rescue ArgumentError => e
+    handle_error(e, 'Invalid post parameters', :bad_request)
   end
 
   def update

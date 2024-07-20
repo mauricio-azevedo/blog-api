@@ -28,6 +28,8 @@ class CommentsController < ApplicationController
       @details = @comment.errors.full_messages
       render 'shared/response', status: :unprocessable_entity
     end
+  rescue NoMethodError => e
+    handle_error(e, 'Invalid comment parameters', :bad_request)
   end
 
   def update

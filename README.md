@@ -90,7 +90,8 @@ The application uses RSpec for testing.
           "name": "User", 
           "created_at": "2023-07-20T08:00:00Z", 
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
       ```
    
@@ -114,7 +115,8 @@ The application uses RSpec for testing.
           "name": "User",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
       ```
 
@@ -125,7 +127,8 @@ The application uses RSpec for testing.
       ```json
       {
         "message": "Signed out successfully",
-        "ok": true
+        "ok": true,
+        "details": []
       }
       ```
 
@@ -146,7 +149,8 @@ The application uses RSpec for testing.
             "created_at": "2023-07-20T08:00:00Z",
             "updated_at": "2023-07-20T08:00:00Z"
           }
-        ]
+        ],
+        "details": []
       }
       ```
 
@@ -164,7 +168,8 @@ The application uses RSpec for testing.
           "body": "This is a sample post",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
      ```
 
@@ -188,7 +193,8 @@ The application uses RSpec for testing.
           "body": "This is a sample post",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
      ```
 
@@ -212,7 +218,8 @@ The application uses RSpec for testing.
           "body": "Updated body",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
       ```
 
@@ -223,7 +230,8 @@ The application uses RSpec for testing.
       ```json
       {
         "message": "Post deleted successfully",
-        "ok": true
+        "ok": true,
+        "details": []
       }
       ```
 
@@ -244,7 +252,8 @@ The application uses RSpec for testing.
             "created_at": "2023-07-20T08:00:00Z",
             "updated_at": "2023-07-20T08:00:00Z"
           }
-        ]
+        ],
+        "details": []
       }
       ```
 
@@ -261,7 +270,8 @@ The application uses RSpec for testing.
           "body": "This is a sample comment",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
       ```
 
@@ -283,7 +293,8 @@ The application uses RSpec for testing.
           "body": "This is a sample comment",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
       ```
 
@@ -305,7 +316,8 @@ The application uses RSpec for testing.
           "body": "Updated comment",
           "created_at": "2023-07-20T08:00:00Z",
           "updated_at": "2023-07-20T08:00:00Z"
-        }
+        },
+        "details": []
       }
       ```
 
@@ -316,6 +328,7 @@ The application uses RSpec for testing.
       ```json
       {
         "message": "Comment deleted successfully",
-        "ok": true
+        "ok": true,
+        "details": []
       }
       ```
