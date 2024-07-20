@@ -12,6 +12,9 @@ RSpec.describe "Posts", type: :request do
       Post.create! valid_attributes.merge(user: user)
       get posts_path, as: :json
       expect(response).to be_successful
+      expect(json_response['ok']).to be true
+      expect(json_response['data']).to be_an(Array)
+      expect(json_response['message']).to eq('Posts retrieved successfully')
     end
   end
 
@@ -20,6 +23,9 @@ RSpec.describe "Posts", type: :request do
       post = Post.create! valid_attributes.merge(user: user)
       get post_path(post), as: :json
       expect(response).to be_successful
+      expect(json_response['ok']).to be true
+      expect(json_response['data']).to be_a(Hash)
+      expect(json_response['message']).to eq('Post retrieved successfully')
     end
   end
 
@@ -34,7 +40,9 @@ RSpec.describe "Posts", type: :request do
       it 'renders a JSON response with the new post' do
         post posts_path, params: { post: valid_attributes }, as: :json
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(json_response['ok']).to be true
+        expect(json_response['data']).to be_a(Hash)
+        expect(json_response['message']).to eq('Post created successfully')
       end
     end
 
@@ -42,7 +50,9 @@ RSpec.describe "Posts", type: :request do
       it 'renders a JSON response with errors for the new post' do
         post posts_path, params: { post: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(json_response['ok']).to be false
+        expect(json_response['message']).to eq('Failed to create post')
+        expect(json_response['details']).to be_an(Array)
       end
     end
   end
@@ -63,7 +73,9 @@ RSpec.describe "Posts", type: :request do
         post = Post.create! valid_attributes.merge(user: user)
         put post_path(post), params: { post: new_attributes }, as: :json
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(json_response['ok']).to be true
+        expect(json_response['data']).to be_a(Hash)
+        expect(json_response['message']).to eq('Post updated successfully')
       end
     end
 
@@ -72,7 +84,9 @@ RSpec.describe "Posts", type: :request do
         post = Post.create! valid_attributes.merge(user: user)
         put post_path(post), params: { post: invalid_attributes }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+        expect(json_response['ok']).to be false
+        expect(json_response['message']).to eq('Failed to update post')
+        expect(json_response['details']).to be_an(Array)
       end
     end
   end
@@ -89,7 +103,8 @@ RSpec.describe "Posts", type: :request do
       post = Post.create! valid_attributes.merge(user: user)
       delete post_path(post), as: :json
       expect(response).to have_http_status(:ok)
-      expect(response.content_type).to eq('application/json; charset=utf-8')
+      expect(json_response['ok']).to be true
+      expect(json_response['message']).to eq('Post deleted successfully')
     end
   end
 end

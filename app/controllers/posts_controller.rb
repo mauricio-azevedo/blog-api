@@ -20,12 +20,13 @@ class PostsController < ApplicationController
     if @post.save
       @data = @post.slice(:id, :title, :body, :created_at, :updated_at)
       @message = 'Post created successfully'
+      render 'shared/response', status: :created
     else
       @ok = false
       @message = 'Failed to create post'
       @details = @post.errors.full_messages
+      render 'shared/response', status: :unprocessable_entity
     end
-    render 'shared/response', status: @ok.nil? ? :ok : :unprocessable_entity
   end
 
   def update

@@ -16,13 +16,15 @@ module Users
     end
 
     def destroy
-      sign_out(current_user) if user_signed_in?
+      @user_signed_out = user_signed_in?
+      sign_out(current_user) if @user_signed_out
+      respond_to_on_destroy
     end
 
     private
 
     def respond_to_on_destroy
-      if user_signed_in?
+      if @user_signed_out
         @message = 'Signed out successfully.'
         render 'shared/response', status: :ok
       else
