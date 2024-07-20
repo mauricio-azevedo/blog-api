@@ -4,33 +4,52 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
-    render :index
+    @data = @posts
+    @message = 'Posts retrieved successfully'
+    render 'shared/response', status: :ok
   end
 
   def show
-    render :show
+    @data = @post
+    @message = 'Post retrieved successfully'
+    render 'shared/response', status: :ok
   end
 
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
-      render :create, status: :created
+      @data = @post.slice(:id, :title, :body, :created_at, :updated_at)
+      @message = 'Post created successfully'
     else
-      render json: @post.errors, status: :unprocessable_entity
+      @ok = false
+      @message = 'Failed to create post'
+      @details = @post.errors.full_messages
     end
+    render 'shared/response', status: @ok.nil? ? :ok : :unprocessable_entity
   end
 
   def update
     if @post.update(post_params)
-      render :update, status: :ok
+      @data = @post.slice(:id, :title, :body, :created_at, :updated_at)
+      @message = 'Post updated successfully'
+      render 'shared/response', status: :ok
     else
-      render json: @post.errors, status: :unprocessable_entity
+      @ok = false
+      @message = 'Failed to update post'
+      @details = @post.errors.full_messages
+      render 'shared/response', status: :unprocessable_entity
     end
   end
 
   def destroy
-    @post.destroy
-    render :destroy, status: :ok
+    if @post.destroy
+      @message = 'Post deleted successfully'
+      render 'shared/response', status: :ok
+    else
+      @ok = false
+      @message = 'Failed to delete post'
+      render 'shared/response', status: :unprocessable_entity
+    end
   end
 
   private
