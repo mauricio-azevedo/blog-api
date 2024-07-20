@@ -312,5 +312,5 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
 
   # Disable flash messages
-  config.navigational_formats = [:json]
+  config.navigational_formats = []
 end

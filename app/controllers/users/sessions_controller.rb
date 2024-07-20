@@ -16,9 +16,9 @@ module Users
     def destroy
       if user_signed_in?
         sign_out(current_user)
-        render json: { message: 'Signed out successfully.' }, status: :ok
+        render json: { message: 'Signed out successfully' }, status: :ok
       else
-        render json: { error: 'No active session found.' }, status: :unprocessable_entity
+        render json: { error: 'No active session found' }, status: :unprocessable_entity
       end
     end
 
@@ -26,9 +26,9 @@ module Users
 
     def respond_to_on_destroy
       if user_signed_in?
-        render json: { message: 'Signed out successfully.' }, status: :ok
+        render json: { message: 'Signed out successfully' }, status: :ok
       else
-        render json: { error: 'No active session found.' }, status: :unprocessable_entity
+        render json: { error: 'No active session found' }, status: :unprocessable_entity
       end
     end
   end
