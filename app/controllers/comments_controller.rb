@@ -41,6 +41,8 @@ class CommentsController < ApplicationController
       @details = @comment.errors.full_messages
       render 'shared/response', status: :unprocessable_entity
     end
+  rescue ArgumentError => e
+    handle_error(e, 'Invalid comment parameters', :bad_request)
   end
 
   def destroy
@@ -58,29 +60,28 @@ class CommentsController < ApplicationController
 
   def set_post
     @post = Post.find(params[:post_id])
-
   rescue ActiveRecord::RecordNotFound => e
-    @ok = false
-    @data = nil
-    @message = 'Post not found'
-    @details = [e.message]
-
-    render 'shared/response', status: :not_found
+    handle_error(e, 'Post not found', :not_found)
   end
 
   def set_comment
     @comment = @post.comments.find(params[:id])
-
   rescue ActiveRecord::RecordNotFound => e
-    @ok = false
-    @data = nil
-    @message = 'Comment not found'
-    @details = [e.message]
-
-    render 'shared/response', status: :not_found
+    handle_error(e, 'Comment not found', :not_found)
   end
 
   def comment_params
     params.require(:comment).permit(:body)
+  rescue ActionController::ParameterMissing => e
+    handle_error(e, 'Comment parameters are missing', :bad_request)
+  end
+
+  def handle_error(error, message, status)
+    unless performed?
+      @ok = false
+      @message = message
+      @details = [error.message]
+      render 'shared/response', status: status
+    end
   end
 end

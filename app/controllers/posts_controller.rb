@@ -40,6 +40,8 @@ class PostsController < ApplicationController
       @details = @post.errors.full_messages
       render 'shared/response', status: :unprocessable_entity
     end
+  rescue ArgumentError => e
+    handle_error(e, 'Invalid post parameters', :bad_request)
   end
 
   def destroy
@@ -57,17 +59,22 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
-
   rescue ActiveRecord::RecordNotFound => e
-    @ok = false
-    @data = nil
-    @message = 'Post not found'
-    @details = [e.message]
-
-    render 'shared/response', status: :not_found
+    handle_error(e, 'Post not found', :not_found)
   end
 
   def post_params
     params.require(:post).permit(:title, :body)
+  rescue ActionController::ParameterMissing => e
+    handle_error(e, 'Post parameters are missing', :bad_request)
+  end
+
+  def handle_error(error, message, status)
+    unless performed?
+      @ok = false
+      @message = message
+      @details = [error.message]
+      render 'shared/response', status: status
+    end
   end
 end
