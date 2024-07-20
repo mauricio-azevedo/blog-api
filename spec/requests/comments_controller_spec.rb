@@ -30,6 +30,14 @@ RSpec.describe "Comments", type: :request do
       expect(json_response['message']).to eq('Comment retrieved successfully')
       expect(json_response['data']).not_to be_empty
     end
+
+    it 'returns a not found response when the comment does not exist' do
+      get post_comment_path(post_record, id: 'nonexistent'), as: :json
+      expect(response).to have_http_status(:not_found)
+      expect(json_response['ok']).to eq(false)
+      expect(json_response['message']).to eq('Comment not found')
+      expect(json_response['details']).to include("Couldn't find Comment with 'id'=nonexistent [WHERE \"comments\".\"post_id\" = $1]")
+    end
   end
 
   describe 'POST /posts/:post_id/comments' do
@@ -119,6 +127,14 @@ RSpec.describe "Comments", type: :request do
       expect(response.content_type).to eq('application/json; charset=utf-8')
       expect(json_response['ok']).to be true
       expect(json_response['message']).to eq('Comment deleted successfully')
+    end
+
+    it 'returns a not found response when the comment does not exist' do
+      delete post_comment_path(post_record, id: 'nonexistent'), as: :json
+      expect(response).to have_http_status(:not_found)
+      expect(json_response['ok']).to eq(false)
+      expect(json_response['message']).to eq('Comment not found')
+      expect(json_response['details']).to include("Couldn't find Comment with 'id'=nonexistent [WHERE \"comments\".\"post_id\" = $1]")
     end
   end
 end

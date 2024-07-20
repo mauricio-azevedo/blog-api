@@ -27,6 +27,14 @@ RSpec.describe "Posts", type: :request do
       expect(json_response['data']).to be_a(Hash)
       expect(json_response['message']).to eq('Post retrieved successfully')
     end
+
+    it 'returns a not found response when the post does not exist' do
+      get post_path(id: 'nonexistent'), as: :json
+      expect(response).to have_http_status(:not_found)
+      expect(json_response['ok']).to eq(false)
+      expect(json_response['message']).to eq('Post not found')
+      expect(json_response['details']).to include("Couldn't find Post with 'id'=nonexistent")
+    end
   end
 
   describe 'POST /create' do
@@ -105,6 +113,14 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status(:ok)
       expect(json_response['ok']).to be true
       expect(json_response['message']).to eq('Post deleted successfully')
+    end
+
+    it 'returns a not found response when the post does not exist' do
+      delete post_path(id: 'nonexistent'), as: :json
+      expect(response).to have_http_status(:not_found)
+      expect(json_response['ok']).to eq(false)
+      expect(json_response['message']).to eq('Post not found')
+      expect(json_response['details']).to include("Couldn't find Post with 'id'=nonexistent")
     end
   end
 end

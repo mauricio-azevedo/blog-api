@@ -57,6 +57,14 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
+
+  rescue ActiveRecord::RecordNotFound => e
+    @ok = false
+    @data = nil
+    @message = 'Post not found'
+    @details = [e.message]
+
+    render 'shared/response', status: :not_found
   end
 
   def post_params
