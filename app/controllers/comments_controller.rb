@@ -7,13 +7,13 @@ class CommentsController < ApplicationController
     @comments = @post.comments
     @data = @comments
     @message = 'Comments retrieved successfully'
-    render 'response', status: :ok
+    render 'shared/response', status: :ok
   end
 
   def show
     @data = @comment
     @message = 'Comment retrieved successfully'
-    render 'response', status: :ok
+    render 'shared/response', status: :ok
   end
 
   def create
@@ -21,12 +21,12 @@ class CommentsController < ApplicationController
     if @comment.save
       @data = @comment.slice(:id, :body, :created_at, :updated_at)
       @message = 'Comment created successfully'
-      render 'response', status: :created
+      render 'shared/response', status: :created
     else
       @ok = false
       @message = 'Failed to create comment'
       @details = @comment.errors.full_messages
-      render 'response', status: :unprocessable_entity
+      render 'shared/response', status: :unprocessable_entity
     end
   end
 
@@ -34,23 +34,23 @@ class CommentsController < ApplicationController
     if @comment.update(comment_params)
       @data = @comment.slice(:id, :body, :created_at, :updated_at)
       @message = 'Comment updated successfully'
-      render 'response', status: :ok
+      render 'shared/response', status: :ok
     else
       @ok = false
       @message = 'Failed to update comment'
       @details = @comment.errors.full_messages
-      render 'response', status: :unprocessable_entity
+      render 'shared/response', status: :unprocessable_entity
     end
   end
 
   def destroy
     if @comment.destroy
       @message = 'Comment deleted successfully'
-      render 'response', status: :ok
+      render 'shared/response', status: :ok
     else
       @ok = false
       @message = 'Failed to delete comment'
-      render 'response', status: :unprocessable_entity
+      render 'shared/response', status: :unprocessable_entity
     end
   end
 

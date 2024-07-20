@@ -7,11 +7,11 @@ module Users
         sign_in(@user)
         @data = @user.slice(:id, :email, :name, :created_at, :updated_at)
         @message = 'Signed in successfully.'
-        render 'response', status: :ok
+        render 'views/response', status: :ok
       else
         @ok = false
         @message = 'Invalid Email or Password'
-        render 'response', status: :unauthorized
+        render 'shared/response', status: :unauthorized
       end
     end
 
@@ -26,11 +26,11 @@ module Users
     def respond_to_on_destroy
       if @user_signed_out
         @message = 'Signed out successfully.'
-        render 'response', status: :ok
+        render 'shared/response', status: :ok
       else
         @ok = false
         @message = 'No active session found'
-        render 'response', status: :unprocessable_entity
+        render 'shared/response', status: :unprocessable_entity
       end
     end
   end
