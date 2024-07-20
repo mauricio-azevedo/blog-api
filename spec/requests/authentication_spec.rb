@@ -10,7 +10,7 @@ RSpec.describe "Authentication", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
         expect(json_response['ok']).to be true
-        expect(json_response['message']).to eq('Signed in successfully.')
+        expect(json_response['message']).to eq('Signed in successfully')
         expect(json_response['data']).not_to be_empty
         expect(response.cookies).to include("_session_id")
       end
@@ -36,7 +36,7 @@ RSpec.describe "Authentication", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
         expect(json_response['ok']).to be true
-        expect(json_response['message']).to eq('Signed out successfully.')
+        expect(json_response['message']).to eq('Signed out successfully')
         expect(json_response['data']).to be_nil
       end
     end

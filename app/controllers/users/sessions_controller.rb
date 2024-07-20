@@ -6,7 +6,7 @@ module Users
       if @user&.valid_password?(params[:user][:password])
         sign_in(@user)
         @data = @user.slice(:id, :email, :name, :created_at, :updated_at)
-        @message = 'Signed in successfully.'
+        @message = 'Signed in successfully'
         render 'shared/response', status: :ok
       else
         @ok = false
@@ -25,7 +25,7 @@ module Users
 
     def respond_to_on_destroy
       if @user_signed_out
-        @message = 'Signed out successfully.'
+        @message = 'Signed out successfully'
         render 'shared/response', status: :ok
       else
         @ok = false
