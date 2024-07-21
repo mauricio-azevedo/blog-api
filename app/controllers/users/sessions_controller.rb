@@ -7,6 +7,7 @@ module Users
     end
 
     def create
+      log_request_details('Sign in')
       if params[:user].nil?
         handle_missing_params
         return
@@ -16,6 +17,7 @@ module Users
 
       if @user&.valid_password?(params[:user][:password])
         sign_in(@user)
+        log_session_details('After sign in')
         @data = @user.slice(:id, :email, :name, :created_at, :updated_at)
         @message = 'Signed in successfully'
         render 'shared/response', status: :ok
@@ -29,8 +31,10 @@ module Users
     end
 
     def destroy
+      log_request_details('Sign out')
       @user_signed_out = user_signed_in?
       sign_out(current_user) if @user_signed_out
+      log_session_details('After sign out')
       respond_to_on_destroy
     end
 
@@ -59,6 +63,16 @@ module Users
         @message = 'No active session found'
         render 'shared/response', status: :unprocessable_entity
       end
+    end
+
+    def log_session_details(context = '')
+      Rails.logger.info "#{context} - Session ID: #{session.id}"
+      Rails.logger.info "#{context} - Session Data: #{session.to_hash}"
+    end
+
+    def log_request_details(context = '')
+      Rails.logger.info "#{context} - Request Headers: #{request.headers.to_h}"
+      Rails.logger.info "#{context} - Request Cookies: #{request.cookies}"
     end
   end
 end
