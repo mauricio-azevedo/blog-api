@@ -1,6 +1,10 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    respond_to :json
+    before_action :set_default_response_format
+
+    def set_default_response_format
+      request.format = :json
+    end
 
     private
 
@@ -11,7 +15,7 @@ module Users
         render 'shared/response', status: :ok
       else
         @ok = false
-        @message = 'Sign up failed'
+        @message = resource.errors.full_messages[0]
         @details = resource.errors.full_messages
         render 'shared/response', status: :unprocessable_entity
       end
