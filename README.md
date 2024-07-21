@@ -57,7 +57,7 @@ The application uses RSpec for testing.
 
 ## Deployment Instructions
 - ### Running Locally
-  **Start the Rails server:**
+  **Start the Rails server**:
   ```sh
   rails server
   ```
@@ -70,14 +70,18 @@ The application uses RSpec for testing.
 
 ## API Endpoints
 - ### Authentication
-  1. #### Register a new user: `POST /users`
+  1. #### Sign up: `POST /users`
       **Parameters**:
-      - `name`: string
-      - `email`: string
-      - `password`: string
-      - `password_confirmation`: string
-
-      <br>
+      ```json
+      {
+        "user": {
+          "name": "string",
+          "name": "string",
+          "password": "string",
+          "password_confirmation": "string"
+        }
+      }
+      ```
 
       **Response**:
       ```json
@@ -97,12 +101,16 @@ The application uses RSpec for testing.
    
       <br>
    
-  2. #### Login: `POST /users/sign_in`
+  2. #### Sign in: `POST /users/sign_in`
       **Parameters**:
-      - `email`: string
-      - `password`: string
-
-      <br>
+      ```json
+      {
+        "user": {
+          "email": "string",
+          "password": "string"
+        }
+      }
+      ```
 
       **Response**:
       ```json
@@ -122,7 +130,7 @@ The application uses RSpec for testing.
 
       <br>
 
-  3. #### Logout: `DELETE /users/sign_out`
+  3. #### Sign out: `DELETE /users/sign_out`
       **Response**:
       ```json
       {
@@ -177,10 +185,14 @@ The application uses RSpec for testing.
 
   3. #### Create a new post: `POST /posts`
       **Parameters**:
-      - `title`: string
-      - `body`: string
-
-     <br>
+      ```json
+      {
+        "post": {
+          "body": "string",
+          "title": "string"
+        }
+      }
+      ```
 
       **Response**:
       ```json
@@ -202,10 +214,14 @@ The application uses RSpec for testing.
 
   4. #### Update a post: `PUT /posts/:id`
       **Parameters**:
-      - `title`: string:
-      - `body`: string
-
-      <br>
+      ```json
+      {
+        "post": {
+          "body": "string",
+          "title": "string"
+        }
+      }
+      ```
 
       **Response**:
       ```json
@@ -239,7 +255,7 @@ The application uses RSpec for testing.
 
 - ### Comments
 
-  1. #### List all comments for a post: `GET /posts/:post_id/comments`
+  1. #### List all comments from a post: `GET /posts/:post_id/comments`
       **Response**:
       ```json
       {
@@ -259,7 +275,7 @@ The application uses RSpec for testing.
 
      <br>
 
-  2. #### Get a specific comment: `GET /posts/:post_id/comments/:id`
+  2. #### Get a specific comment from a post: `GET /posts/:post_id/comments/:id`
       **Response**:
       ```json
       {
@@ -277,11 +293,15 @@ The application uses RSpec for testing.
 
      <br>
 
-  3. #### Create a new comment: `POST /posts/:post_id/comments`
+  3. #### Create a new comment for a post: `POST /posts/:post_id/comments`
       **Parameters**:
-      - `body`: string
-
-     <br>
+      ```json
+      {
+        "comment": {
+          "body": "string"
+        }
+      }
+      ```
 
       **Response**:
       ```json
@@ -300,11 +320,15 @@ The application uses RSpec for testing.
 
      <br>
 
-  4. #### Update a comment: `PUT /posts/:post_id/comments/:id`
+  4. #### Update a comment from a post: `PUT /posts/:post_id/comments/:id`
       **Parameters**:
-      - `body`: string
-
-     <br>
+      ```json
+      {
+        "comment": {
+          "body": "string"
+        }
+      }
+      ```
 
       **Response**:
       ```json
@@ -323,7 +347,7 @@ The application uses RSpec for testing.
 
      <br>
 
-  5. #### Delete a comment: `DELETE /posts/:post_id/comments/:id`
+  5. #### Delete a comment from a post: `DELETE /posts/:post_id/comments/:id`
       **Response**:
       ```json
       {
