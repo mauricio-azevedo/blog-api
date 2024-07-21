@@ -151,11 +151,36 @@ The application uses RSpec for testing.
         "ok": true,
         "data": [
           {
-            "id": 1,
-            "title": "Sample Post",
-            "body": "This is a sample post",
-            "created_at": "2023-07-20T08:00:00Z",
-            "updated_at": "2023-07-20T08:00:00Z"
+            "id": 6,
+            "title": "A Post",
+            "body": "A cool post",
+            "user_id": 12,
+            "created_at": "2024-07-21T05:29:37.989Z",
+            "updated_at": "2024-07-21T05:29:37.989Z",
+            "user": {
+              "id": 12,
+              "name": "Maurício Azevedo",
+              "email": "mauricio.mendonca.azevedo+5@gmail.com",
+              "created_at": "2024-07-20T07:45:49.236Z",
+              "updated_at": "2024-07-20T07:45:49.236Z"
+            },
+            "comments": [
+              {
+                "id": 6,
+                "body": "First edited 1",
+                "post_id": 6,
+                "user_id": 12,
+                "created_at": "2024-07-21T08:06:58.558Z",
+                "updated_at": "2024-07-21T15:56:47.289Z",
+                "user": {
+                  "id": 12,
+                  "name": "Maurício Azevedo",
+                  "email": "mauricio.mendonca.azevedo+5@gmail.com",
+                  "created_at": "2024-07-20T07:45:49.236Z",
+                  "updated_at": "2024-07-20T07:45:49.236Z"
+                }
+              }
+            ]
           }
         ],
         "details": []
