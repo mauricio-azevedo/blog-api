@@ -4,14 +4,14 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
 
   def index
-    @comments = @post.comments
-    @data = @comments
+    @comments = @post.comments.includes(:user)
+    @data = @comments.as_json(include: :user)
     @message = 'Comments retrieved successfully'
     render 'shared/response', status: :ok
   end
 
   def show
-    @data = @comment
+    @data = @comment.as_json(include: :user)
     @message = 'Comment retrieved successfully'
     render 'shared/response', status: :ok
   end
@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
   def create
     @comment = @post.comments.build(comment_params.merge(user: current_user))
     if @comment.save
-      @data = @comment.slice(:id, :body, :created_at, :updated_at)
+      @data = @comment.as_json(include: :user)
       @message = 'Comment created successfully'
       render 'shared/response', status: :created
     else
@@ -34,7 +34,7 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      @data = @comment.slice(:id, :body, :created_at, :updated_at)
+      @data = @comment.as_json(include: :user)
       @message = 'Comment updated successfully'
       render 'shared/response', status: :ok
     else

@@ -3,14 +3,26 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    @posts = Post.all
-    @data = @posts
+    @posts = Post.includes(:user, comments: :user).order(created_at: :desc)
+    @data = @posts.map do |post|
+      post.as_json(include: {
+        user: {},
+        comments: {
+          include: :user
+        }
+      }).merge("comments" => post.comments.order(created_at: :desc).map { |comment| comment.as_json(include: :user) })
+    end
     @message = 'Posts retrieved successfully'
     render 'shared/response', status: :ok
   end
 
   def show
-    @data = @post
+    @data = @post.as_json(include: {
+      user: {},
+      comments: {
+        include: :user
+      }
+    }).merge("comments" => @post.comments.order(created_at: :desc).map { |comment| comment.as_json(include: :user) })
     @message = 'Post retrieved successfully'
     render 'shared/response', status: :ok
   end
@@ -18,7 +30,12 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
-      @data = @post.slice(:id, :title, :body, :created_at, :updated_at)
+      @data = @post.as_json(include: {
+        user: {},
+        comments: {
+          include: :user
+        }
+      }).merge("comments" => @post.comments.order(created_at: :desc).map { |comment| comment.as_json(include: :user) })
       @message = 'Post created successfully'
       render 'shared/response', status: :created
     else
@@ -33,7 +50,12 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      @data = @post.slice(:id, :title, :body, :created_at, :updated_at)
+      @data = @post.as_json(include: {
+        user: {},
+        comments: {
+          include: :user
+        }
+      }).merge("comments" => @post.comments.order(created_at: :desc).map { |comment| comment.as_json(include: :user) })
       @message = 'Post updated successfully'
       render 'shared/response', status: :ok
     else
@@ -60,7 +82,7 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.includes(:user, comments: :user).find(params[:id])
   rescue ActiveRecord::RecordNotFound => e
     handle_error(e, 'Post not found', :not_found)
   end
