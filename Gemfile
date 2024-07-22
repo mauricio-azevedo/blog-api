@@ -50,6 +50,8 @@ gem "bootsnap", require: false
 # Use Devise for user authentication [https://github.com/heartcombo/devise]
 gem 'devise'
 
+gem 'jwt'
+
 group :test do
   # Matchers for testing Rails models with RSpec [https://github.com/thoughtbot/shoulda-matchers]
   gem 'shoulda-matchers', '~> 5.0'

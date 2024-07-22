@@ -1,5 +1,6 @@
 module Users
   class SessionsController < Devise::SessionsController
+    skip_before_action :authenticate_user!, only: [:create]
     before_action :set_default_response_format
 
     def set_default_response_format
@@ -15,23 +16,20 @@ module Users
       @user = User.find_by(email: params[:user][:email])
 
       if @user&.valid_password?(params[:user][:password])
-        sign_in(@user)
-        @data = @user.slice(:id, :email, :name, :created_at, :updated_at)
+        token = @user.generate_jwt
+        @data = { user: @user.slice(:id, :email, :name, :created_at, :updated_at), token: token }
         @message = 'Signed in successfully'
+        @ok = true
         render 'shared/response', status: :ok
       else
         @ok = false
         @message = 'Invalid Email or Password'
+        @data = nil
+        @details = []
         render 'shared/response', status: :unauthorized
       end
     rescue NoMethodError => e
       handle_invalid_params(e)
-    end
-
-    def destroy
-      @user_signed_out = user_signed_in?
-      sign_out(current_user) if @user_signed_out
-      respond_to_on_destroy
     end
 
     private
@@ -48,17 +46,6 @@ module Users
       @message = 'Invalid request parameters'
       @details = [error.message]
       render 'shared/response', status: :unprocessable_entity
-    end
-
-    def respond_to_on_destroy
-      if @user_signed_out
-        @message = 'Signed out successfully'
-        render 'shared/response', status: :ok
-      else
-        @ok = false
-        @message = 'No active session found'
-        render 'shared/response', status: :unprocessable_entity
-      end
     end
   end
 end

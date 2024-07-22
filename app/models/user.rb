@@ -3,11 +3,16 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  
+
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 6 }, if: :password
+
+  # Method to generate JWT token
+  def generate_jwt
+    JsonWebToken.encode(user_id: id)
+  end
 end
