@@ -32,10 +32,9 @@ module BlogApi
     # Include the middleware necessary for session management
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore,
-                          key: '_blog_session',
                           domain: :all,
                           tld_length: 2,
-                          same_site: Rails.env.production? ? :none : :lax,
+                          same_site: :lax,
                           secure: Rails.env.production?
   end
 end
