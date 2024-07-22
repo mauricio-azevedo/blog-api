@@ -12,7 +12,7 @@ RSpec.describe "Authentication", type: :request do
         expect(json_response['ok']).to be true
         expect(json_response['message']).to eq('Signed in successfully')
         expect(json_response['data']).not_to be_empty
-        expect(response.cookies).to include("_session_id")
+        expect(json_response['data']['token']).not_to be_nil
       end
     end
 
@@ -28,26 +28,53 @@ RSpec.describe "Authentication", type: :request do
     end
   end
 
-  describe "DELETE /users/sign_out" do
-    context "with valid session" do
-      it "signs out the user" do
-        post user_session_path, params: { user: { email: user.email, password: user.password } }, as: :json
-        delete destroy_user_session_path, headers: { "Cookie" => response.headers["Set-Cookie"] }, as: :json
+  describe "POST /users" do
+    context "with valid parameters" do
+      let(:valid_params) do
+        {
+          user: {
+            name: "Test User",
+            email: "test@example.com",
+            password: "password",
+            password_confirmation: "password"
+          }
+        }
+      end
+
+      it "creates a new user and returns a token" do
+        post user_registration_path, params: valid_params, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
         expect(json_response['ok']).to be true
-        expect(json_response['message']).to eq('Signed out successfully')
-        expect(json_response['data']).to be_nil
+        expect(json_response['message']).to eq('Signed up successfully')
+        expect(json_response['data']).not_to be_nil
+        expect(json_response['data']['token']).not_to be_nil
+        expect(json_response['data']['user']).not_to be_nil
+        expect(json_response['data']['user']['email']).to eq('test@example.com')
       end
     end
 
-    context "without valid session" do
-      it "returns an unprocessable entity response" do
-        delete destroy_user_session_path, as: :json
+    context "with invalid parameters" do
+      let(:invalid_params) do
+        {
+          user: {
+            name: "",
+            email: "invalid",
+            password: "short",
+            password_confirmation: "short"
+          }
+        }
+      end
+
+      it "does not create a new user and returns errors" do
+        post user_registration_path, params: invalid_params, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
         expect(json_response['ok']).to be false
-        expect(json_response['message']).to eq('No active session found')
+        expect(json_response['message']).to eq('Email is invalid')
+        expect(json_response['details']).to include("Name can't be blank")
+        expect(json_response['details']).to include("Email is invalid")
+        expect(json_response['details']).to include("Password is too short (minimum is 6 characters)")
         expect(json_response['data']).to be_nil
       end
     end
