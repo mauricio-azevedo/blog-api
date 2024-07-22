@@ -11,6 +11,7 @@ This is a Blog API application built with Ruby on Rails. It includes user authen
 5. [Running the Test Suite](#running-the-test-suite)
 6. [Deployment Instructions](#deployment-instructions)
 7. [API Endpoints](#api-endpoints)
+7. [Authentication](#authentication)
 
 ***
 
@@ -89,11 +90,14 @@ The application uses RSpec for testing.
         "message": "Signed up successfully",
         "ok": true, 
         "data": {
-          "id": 1, 
-          "email": "user@example.com", 
-          "name": "User", 
-          "created_at": "2023-07-20T08:00:00Z", 
-          "updated_at": "2023-07-20T08:00:00Z"
+          "user": {
+            "id": 1, 
+            "email": "user@example.com", 
+            "name": "User", 
+            "created_at": "2023-07-20T08:00:00Z", 
+            "updated_at": "2023-07-20T08:00:00Z"
+          },
+          "token": "eyJhbGciOiJIUzI1NiJ9..."
         },
         "details": []
       }
@@ -118,24 +122,15 @@ The application uses RSpec for testing.
         "message": "Signed in successfully",
         "ok": true,
         "data": {
-          "id": 1,
-          "email": "user@example.com",
-          "name": "User",
-          "created_at": "2023-07-20T08:00:00Z",
-          "updated_at": "2023-07-20T08:00:00Z"
+          "user": {
+            "id": 1, 
+            "email": "user@example.com", 
+            "name": "User", 
+            "created_at": "2023-07-20T08:00:00Z", 
+            "updated_at": "2023-07-20T08:00:00Z"
+          },
+          "token": "eyJhbGciOiJIUzI1NiJ9..."
         },
-        "details": []
-      }
-      ```
-
-      <br>
-
-  3. #### Sign out: `DELETE /users/sign_out`
-      **Response**:
-      ```json
-      {
-        "message": "Signed out successfully",
-        "ok": true,
         "details": []
       }
       ```
@@ -381,3 +376,19 @@ The application uses RSpec for testing.
         "details": []
       }
       ```
+
+***
+
+## Authentication
+For all authenticated requests, the token must be included in the `Authorization` header. The token should be prefixed with `Bearer `.
+
+- ### Obtaining the Token
+  You can obtain the token by signing up or signing in.
+
+- ### Using the Token
+  **Example**:
+  ```
+  curl -X GET http://localhost:3000/posts \
+  -H "Authorization: Bearer your_jwt_token_here"
+  ```
+
