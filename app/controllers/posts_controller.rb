@@ -2,8 +2,10 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    @posts = Post.includes(:user, comments: :user).order(created_at: :desc)
-    @data = @posts.map do |post|
+    page = params[:page] || 1
+    limit = params[:limit] || 10
+    @posts = Post.includes(:user, comments: :user).order(created_at: :desc).page(page).per(limit)
+    @mapped_posts = @posts.map do |post|
       post.as_json(include: {
         user: {},
         comments: {
@@ -11,6 +13,7 @@ class PostsController < ApplicationController
         }
       }).merge("comments" => post.comments.order(created_at: :desc).map { |comment| comment.as_json(include: :user) })
     end
+    @data = { posts: @mapped_posts, pagination: pagination_meta(@posts) }
     @message = 'Posts retrieved successfully'
     render 'shared/response', status: :ok
   end
@@ -99,5 +102,15 @@ class PostsController < ApplicationController
       @details = [error.message]
       render 'shared/response', status: status
     end
+  end
+
+  def pagination_meta(posts)
+    {
+      current_page: posts.current_page,
+      next_page: posts.next_page,
+      prev_page: posts.prev_page,
+      total_pages: posts.total_pages,
+      total_count: posts.total_count
+    }
   end
 end

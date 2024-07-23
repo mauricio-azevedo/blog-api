@@ -50,7 +50,11 @@ gem "bootsnap", require: false
 # Use Devise for user authentication [https://github.com/heartcombo/devise]
 gem 'devise'
 
+# Handle stateless authentication with JSON Web Tokens (JWT)
 gem 'jwt'
+
+# Easier pagination handling
+gem 'kaminari'
 
 group :test do
   # Matchers for testing Rails models with RSpec [https://github.com/thoughtbot/shoulda-matchers]
