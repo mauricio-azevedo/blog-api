@@ -21,7 +21,7 @@ module Users
           value: refresh_token,
           httponly: true,
           secure: Rails.env.production?,
-          same_site: :strict
+          same_site: Rails.env.production? ? :none : :lax
         }
         render 'shared/response', status: :ok
       else
