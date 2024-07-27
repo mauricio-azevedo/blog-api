@@ -4,8 +4,7 @@ class PostsController < ApplicationController
   def index
     # Log the cookies to check if the refresh token is being sent
     Rails.logger.info "Cookies: #{request.cookies.inspect}"
-    Rails.logger.info "Signed Cookies: #{request.signed_cookies.inspect}"
-    
+
     page = params[:page] || 1
     limit = params[:limit] || 10
     @posts = Post.includes(:user, comments: :user).order(created_at: :desc).page(page).per(limit)

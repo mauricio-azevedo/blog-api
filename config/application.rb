@@ -37,5 +37,6 @@ module BlogApi
     # This middleware provides support for reading and writing cookies in the application.
     # Essential for handling session cookies, flash messages, and other cookie-based data.
     config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_blog_session'
   end
 end
