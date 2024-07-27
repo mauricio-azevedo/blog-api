@@ -49,9 +49,7 @@ gem "bootsnap", require: false
 
 # Use Devise for user authentication [https://github.com/heartcombo/devise]
 gem 'devise'
-
-# Handle stateless authentication with JSON Web Tokens (JWT)
-gem 'jwt'
+gem 'devise-jwt'
 
 # Easier pagination handling
 gem 'kaminari'

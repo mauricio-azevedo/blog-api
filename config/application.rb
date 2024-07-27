@@ -29,12 +29,13 @@ module BlogApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    # Include the middleware necessary for session management
+    # Autoload paths in Rails are directories that Rails will automatically
+    # load classes and modules from without needing explicit require statements.
+    config.autoload_paths << Rails.root.join('lib')
+
+    # Adds the ActionDispatch::Cookies middleware to the middleware stack.
+    # This middleware provides support for reading and writing cookies in the application.
+    # Essential for handling session cookies, flash messages, and other cookie-based data.
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore,
-                          domain: :all,
-                          tld_length: 2,
-                          same_site: :lax,
-                          secure: Rails.env.production?
   end
 end

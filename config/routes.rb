@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     sessions: 'users/sessions'
   }
 
+  resource :tokens, only: [:create], path: 'tokens/refresh'
+
   resources :posts, only: [:index, :show, :create, :update, :destroy], defaults: { format: :json } do
     resources :comments, only: [:index, :show, :create, :update, :destroy], defaults: { format: :json }
   end

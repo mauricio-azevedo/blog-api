@@ -10,16 +10,24 @@ module Users
 
     def respond_with(resource, _opts = {})
       if resource.persisted?
-        token = resource.generate_jwt
-        @data = { user: resource.slice(:id, :email, :name, :created_at, :updated_at), token: token }
+        access_token = resource.generate_access_token
+        refresh_token = resource.generate_refresh_token
+        @data = {
+          user: resource.slice(:id, :email, :name, :created_at, :updated_at),
+          access_token: access_token
+        }
         @message = 'Signed up successfully'
-        @ok = true
+        cookies.signed[:refresh_token] = {
+          value: refresh_token,
+          httponly: true,
+          secure: Rails.env.production?,
+          same_site: :strict
+        }
         render 'shared/response', status: :ok
       else
         @ok = false
         @message = resource.errors.full_messages[0]
         @details = resource.errors.full_messages
-        @data = nil
         render 'shared/response', status: :unprocessable_entity
       end
     end
